@@ -23,6 +23,7 @@ import javax.enterprise.inject.spi.BeforeBeanDiscovery;
 import javax.enterprise.inject.spi.Extension;
 
 public class PluginLoaderExtension implements Extension {
+    private static final Logger logger = Logger.getLogger(PluginLoaderExtension.class.getName());
 
     public void beforeBeanDiscovery(@Observes BeforeBeanDiscovery bbd, BeanManager bm) {
         Set<Class<?>> classes = new HashSet<Class<?>>();
@@ -46,8 +47,7 @@ public class PluginLoaderExtension implements Extension {
                     }
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
-                Logger.getLogger(PluginLoaderExtension.class.getName()).log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, null, ex);
             } finally {
                 closeInputStream(jis);
             }
@@ -57,7 +57,7 @@ public class PluginLoaderExtension implements Extension {
             try {
                 addURLToSystemClassLoader(url);
             } catch (IntrospectionException ex) {
-                Logger.getLogger(PluginLoaderExtension.class.getName()).log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, null, ex);
             }
         }
 
@@ -72,7 +72,7 @@ public class PluginLoaderExtension implements Extension {
             try {
                 is.close();
             } catch (IOException ex) {
-                Logger.getLogger(PluginLoaderExtension.class.getName()).log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, null, ex);
             }
         }
     }
