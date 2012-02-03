@@ -1,4 +1,4 @@
-package com.steeplesoft.cdiexperiment.extensionloader;
+package com.steeplesoft.pluginsystem.kernel;
 
 import java.beans.IntrospectionException;
 import java.io.BufferedInputStream;
@@ -22,8 +22,8 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.BeforeBeanDiscovery;
 import javax.enterprise.inject.spi.Extension;
 
-public class PluginLoaderExtension implements Extension {
-    private static final Logger logger = Logger.getLogger(PluginLoaderExtension.class.getName());
+public class PluginLoader implements Extension {
+    private static final Logger logger = Logger.getLogger(PluginLoader.class.getName());
 
     public void beforeBeanDiscovery(@Observes BeforeBeanDiscovery bbd, BeanManager bm) {
         Set<Class<?>> classes = new HashSet<Class<?>>();
@@ -41,8 +41,7 @@ public class PluginLoaderExtension implements Extension {
                     if (!entry.isDirectory()) {
                         String fileName = entry.getName();
                         if (fileName.endsWith(".class")) {
-                            fileName = fileName.substring(0, fileName.length() - 6).replace("/", ".");
-                            classes.add(defineClass(fileName, getBytes(entry, jis)));
+                            classes.add(defineClass(fileName.substring(0, fileName.length() - 6).replace("/", "."), getBytes(entry, jis)));
                         }
                     }
                 }
