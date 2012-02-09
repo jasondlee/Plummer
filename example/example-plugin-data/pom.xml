@@ -3,8 +3,8 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
 
-    <artifactId>plugin-system</artifactId>
-    <name>Plugin System</name>
+    <artifactId>example-plugin-data</artifactId>
+    <name>Example Plugin Data</name>
 
     <parent>
         <groupId>com.steeplesoft</groupId>

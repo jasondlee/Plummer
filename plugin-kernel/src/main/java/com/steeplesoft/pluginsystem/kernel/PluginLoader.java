@@ -17,6 +17,7 @@ import javax.enterprise.inject.spi.BeforeBeanDiscovery;
 import javax.enterprise.inject.spi.Extension;
 
 public class PluginLoader implements Extension {
+
     protected static final String SERVICES_NAME = "com.steeplesoft.pluginsystem.finders";
     private static final Logger logger = Logger.getLogger(PluginLoader.class.getName());
     List<PluginFinder> pluginFinders;
@@ -29,7 +30,7 @@ public class PluginLoader implements Extension {
             }
         }
     }
-    
+
     public void afterDeploymentValidation(@Observes AfterDeploymentValidation adv) {
         for (PluginFinder pluginFinder : pluginFinders) {
             pluginFinder.release();
@@ -45,7 +46,7 @@ public class PluginLoader implements Extension {
                 try {
                     Class<?> clazz = Class.forName(finderClass);
                     if (PluginFinder.class.isAssignableFrom(clazz)) {
-                        finders.add((PluginFinder)clazz.newInstance());
+                        finders.add((PluginFinder) clazz.newInstance());
                     }
                 } catch (Exception ex) {
                     Logger.getLogger(PluginLoader.class.getName()).log(Level.SEVERE, null, ex);
@@ -70,10 +71,12 @@ public class PluginLoader implements Extension {
             in.close();
             return contents.toString();
         } finally {
-            try {
-                in.close();
-            } catch (IOException ex) {
-                Logger.getLogger(PluginLoader.class.getName()).log(Level.SEVERE, null, ex);
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(PluginLoader.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     }

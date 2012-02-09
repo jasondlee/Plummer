@@ -15,8 +15,10 @@ import org.jboss.weld.environment.se.events.ContainerInitialized;
  */
 public class Main {
     public static void main(String... args) {
-        WeldContainer weld = new Weld().initialize();
+        Weld weld = new Weld();
+        weld.initialize();
         System.out.println("Hi");
+        weld.shutdown();
     }
     
     public void saySomething(@Observes ContainerInitialized event) {
