@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.steeplesoft</groupId>
-    <artifactId>plugin-system</artifactId>
+    <artifactId>plugin-system-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>CDI Plugins</name>
@@ -21,6 +21,8 @@
         <module>plugin-sample2</module>
         -->
         <module>plugin-data</module>
+        <module>plugin-finder-filesystem</module>
+        <module>example</module>
         <module>plugin-kernel</module>
     </modules>
 
@@ -45,6 +47,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
 <!--                <version>${compiler-plugin-version}</version>-->
                 <inherited>true</inherited>
                 <configuration>

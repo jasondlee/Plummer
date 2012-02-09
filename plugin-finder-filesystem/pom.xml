@@ -5,7 +5,7 @@
 
     <parent>
         <groupId>com.steeplesoft</groupId>
-        <artifactId>plugin-system</artifactId>
+        <artifactId>plugin-system-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 

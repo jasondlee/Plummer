@@ -24,8 +24,13 @@ public class ExtensionTest {
 
     @BeforeClass
     public static void beforeClass() {
-        System.setProperty("plugin.dir", "../plugin-sample1/target/");
+        System.setProperty("plugin.dir", "../example/plugin-sample1/target/");
         weld = new Weld().initialize();
+    }
+    
+    @Test
+    public void testPluginFinderLookup() {
+        
     }
 
     @Test

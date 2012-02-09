@@ -1,2 +1,5 @@
 /plugin-kernel/target/
 /plugin-data/target/
+/plugin-finder-filesystem/target/
+/example/plugin-sample1/target/
+/example/plugin-sample2/target/
