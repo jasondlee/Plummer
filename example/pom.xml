@@ -17,12 +17,13 @@
         <module>example-plugin-data</module>
         <module>plugin-sample1</module>
         <module>plugin-sample2</module>
+        <module>webapp</module>
     </modules>
 
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>plugin-data</artifactId>
+            <artifactId>plugin-system</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

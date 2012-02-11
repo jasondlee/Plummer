@@ -37,10 +37,10 @@ public class PluginLoader implements Extension {
         }
     }
 
-    protected List<PluginFinder> getPluginFinders() {
+    public static List<PluginFinder> getPluginFinders() {
         List<PluginFinder> finders = new ArrayList<PluginFinder>();
         try {
-            Enumeration<URL> e = getClass().getClassLoader().getResources("META-INF/services/" + SERVICES_NAME);
+            Enumeration<URL> e = Thread.currentThread().getContextClassLoader().getResources("META-INF/services/" + SERVICES_NAME);
             while (e.hasMoreElements()) {
                 String finderClass = readFileFromUrl(e.nextElement());
                 try {
@@ -59,7 +59,7 @@ public class PluginLoader implements Extension {
         return finders;
     }
 
-    protected String readFileFromUrl(URL url) throws IOException {
+    protected static String readFileFromUrl(URL url) throws IOException {
         BufferedReader in = null;
         try {
             in = new BufferedReader(new InputStreamReader(url.openStream()));

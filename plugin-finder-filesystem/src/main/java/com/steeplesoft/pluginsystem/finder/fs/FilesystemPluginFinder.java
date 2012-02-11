@@ -28,53 +28,57 @@ import java.util.logging.Logger;
  * @author jdlee
  */
 public class FilesystemPluginFinder implements PluginFinder {
+
     private static final Logger logger = Logger.getLogger(FilesystemPluginFinder.class.getName());
+    private static Set<Class<?>> classes;
 
     @Override
-    public Set<Class<?>> getClasses() {
-        Set<Class<?>> classes = new HashSet<Class<?>>();
-        Set<URL> jars = new HashSet<URL>();
+    public synchronized Set<Class<?>> getClasses() {
+        if (classes == null) {
+            classes = new HashSet<Class<?>>();
+            Set<URL> jars = new HashSet<URL>();
 
-        for (File jarFile : getFiles()) {
-            JarInputStream jis = null;
-            try {
-                jars.add(jarFile.toURI().toURL());
-                jis = new JarInputStream(new BufferedInputStream(new FileInputStream(jarFile)));
+            for (File jarFile : getFiles()) {
+                JarInputStream jis = null;
+                try {
+                    jars.add(jarFile.toURI().toURL());
+                    jis = new JarInputStream(new BufferedInputStream(new FileInputStream(jarFile)));
 
-                JarEntry entry;
+                    JarEntry entry;
 
-                while ((entry = jis.getNextJarEntry()) != null) {
-                    if (!entry.isDirectory()) {
-                        String fileName = entry.getName();
-                        if (fileName.endsWith(".class")) {
-                            classes.add(defineClass(fileName.substring(0, fileName.length() - 6).replace("/", "."), getBytes(entry, jis)));
+                    while ((entry = jis.getNextJarEntry()) != null) {
+                        if (!entry.isDirectory()) {
+                            String fileName = entry.getName();
+                            if (fileName.endsWith(".class")) {
+                                classes.add(defineClass(fileName.substring(0, fileName.length() - 6).replace("/", "."), getBytes(entry, jis)));
+                            }
                         }
                     }
+                } catch (Exception ex) {
+                    logger.log(Level.SEVERE, null, ex);
+                } finally {
+                    closeInputStream(jis);
                 }
-            } catch (Exception ex) {
-                logger.log(Level.SEVERE, null, ex);
-            } finally {
-                closeInputStream(jis);
+            }
+
+            for (URL url : jars) {
+                try {
+                    addURLToSystemClassLoader(url);
+                } catch (IntrospectionException ex) {
+                    logger.log(Level.SEVERE, null, ex);
+                }
             }
         }
-        
-        for (URL url : jars) {
-            try {
-                addURLToSystemClassLoader(url);
-            } catch (IntrospectionException ex) {
-                logger.log(Level.SEVERE, null, ex);
-            }
-        }
-        
+
         return classes;
 
     }
 
     @Override
     public void release() {
-        // No op
+        classes.clear();
     }
-    
+
     protected void closeInputStream(InputStream is) {
         if (is != null) {
             try {
@@ -91,6 +95,7 @@ public class FilesystemPluginFinder implements PluginFinder {
             pluginDir = System.getProperty("user.home") + "/.plugins";
         }
         File[] files = new File(pluginDir).listFiles(new FileFilter() {
+
             @Override
             public boolean accept(File file) {
                 return file.isFile() && file.getName().toLowerCase().endsWith(".jar");
@@ -101,7 +106,7 @@ public class FilesystemPluginFinder implements PluginFinder {
 
     protected void addURLToSystemClassLoader(URL url) throws IntrospectionException {
         URLClassLoader systemClassLoader = (URLClassLoader) getClass().getClassLoader();
-                //ClassLoader.getSystemClassLoader();
+        //ClassLoader.getSystemClassLoader();
         Class<URLClassLoader> classLoaderClass = URLClassLoader.class;
 
         try {

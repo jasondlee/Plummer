@@ -20,7 +20,7 @@
         <module>plugin-sample1</module>
         <module>plugin-sample2</module>
         -->
-        <module>plugin-data</module>
+        <module>plugin-system</module>
         <module>plugin-finder-filesystem</module>
         <module>example</module>
         <module>plugin-kernel</module>
