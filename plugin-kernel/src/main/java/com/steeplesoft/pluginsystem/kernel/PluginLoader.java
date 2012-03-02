@@ -55,6 +55,10 @@ public class PluginLoader implements Extension {
         } catch (IOException ex) {
             Logger.getLogger(PluginLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        if (finders.isEmpty()) {
+            finders.add(new FilesystemPluginFinder());
+        }
 
         return finders;
     }
