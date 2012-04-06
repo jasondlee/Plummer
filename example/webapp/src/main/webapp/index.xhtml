@@ -9,10 +9,17 @@
         <title>Should Not Be Displayed</title>
     </head>
     <body>
+        <h1>MyBean</h1>
         #{myBean.example}
         <hr/>
-        #{jsfBean.someData}
+        <h1>JsfBean</h1>
+        <ul>
+            <ui:repeat value="#{jsfBean.someData}" var="data">
+                <li>#{data}</li>
+            </ui:repeat>
+        </ul>
         <hr />
+        <h1>FileDataStore</h1>
         #{fileDataStore.description}
     </body>
 </html>
