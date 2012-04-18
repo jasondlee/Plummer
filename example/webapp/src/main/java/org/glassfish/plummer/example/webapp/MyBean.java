@@ -4,6 +4,7 @@
  */
 package org.glassfish.plummer.example.webapp;
 
+import javax.enterprise.inject.Instance;
 import org.glassfish.plummer.example.model.DataStore;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
@@ -15,9 +16,13 @@ import javax.inject.Inject;
 @Model
 public class MyBean {
     @Inject
-    DataStore dataStore;
+    Instance<DataStore> dataStores;
     
     public String getExample() {
-        return dataStore.getDescription();
+        StringBuilder sb = new StringBuilder();
+        for (DataStore ds : dataStores) {
+            sb.append(ds.getDescription()).append("<p/>");
+        }
+        return sb.toString();
     }
 }

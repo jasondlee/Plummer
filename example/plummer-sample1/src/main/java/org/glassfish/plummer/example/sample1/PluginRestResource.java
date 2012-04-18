@@ -12,7 +12,7 @@ import javax.ws.rs.Path;
  *
  * @author jdlee
  */
-//@Path("plugin")
+@Path("plugin")
 //@ApplicationScoped
 public class PluginRestResource implements Marker {
 
