@@ -15,9 +15,9 @@
     </properties>
 
     <modules>
-        <module>plummer-api</module>
+        <module>api</module>
         <module>example</module>
-        <module>plummer-kernel</module>
+        <module>kernel</module>
     </modules>
 
     <dependencies>
