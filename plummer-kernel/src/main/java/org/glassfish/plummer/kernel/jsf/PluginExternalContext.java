@@ -20,8 +20,10 @@ public class PluginExternalContext extends ExternalContextWrapper {
         this.wrapped = wrapped;
     }
 
+    @Override
     public URL getResource(String path) throws MalformedURLException {
-        URL url = Thread.currentThread().getContextClassLoader().getResource(path.substring(1));
+        URL url = Thread.currentThread().getContextClassLoader()
+                .getResource(path.startsWith("/") ? path.substring(1) : path);
         if (url == null) {
             url = getWrapped().getResource(path);
         }

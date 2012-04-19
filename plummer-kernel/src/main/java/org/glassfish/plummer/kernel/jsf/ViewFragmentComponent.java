@@ -1,8 +1,6 @@
 package org.glassfish.plummer.kernel.jsf;
 
-import org.glassfish.plummer.kernel.PluginMetadata;
 import com.sun.faces.application.ApplicationAssociate;
-import com.sun.faces.facelets.Facelet;
 import com.sun.faces.facelets.impl.DefaultFaceletFactory;
 import java.io.IOException;
 import java.util.List;
@@ -20,6 +18,8 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
+import javax.faces.view.facelets.Facelet;
+import org.glassfish.plummer.kernel.PluginMetadata;
 
 /**
  *
@@ -28,7 +28,7 @@ import javax.faces.event.SystemEventListener;
 @FacesComponent(ViewFragmentComponent.COMPONENT_TYPE)
 public class ViewFragmentComponent extends UIOutput implements SystemEventListener, NamingContainer {
 
-    public static final String COMPONENT_FAMILY = "org.glassfish.admingui.pluginprototype.ViewFragmentComponent";
+    public static final String COMPONENT_FAMILY = "org.glassfish.plummer.kernel.jsf.ViewFragmentComponent";
     public static final String COMPONENT_TYPE = COMPONENT_FAMILY;
     public static final String RENDERER_TYPE = COMPONENT_FAMILY;
     private String _type;

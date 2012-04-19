@@ -4,12 +4,12 @@
   "http://java.sun.com/dtd/facelet-taglib_1_0.dtd">
 
 <facelet-taglib>
-    <namespace>http://admingui.glassfish.org/console</namespace>
+    <namespace>http://java.net/plummer</namespace>
     <tag>
         <tag-name>viewFragment</tag-name>
         <component>
-            <component-type>org.glassfish.admingui.pluginprototype.ViewFragmentComponent</component-type>
-            <renderer-type>org.glassfish.admingui.pluginprototype.ViewFragmentComponent</renderer-type>
+            <component-type>org.glassfish.plummer.kernel.jsf.ViewFragmentComponent</component-type>
+            <renderer-type>org.glassfish.plummer.kernel.jsf.ViewFragmentComponent</renderer-type>
         </component>
     </tag>
 </facelet-taglib>

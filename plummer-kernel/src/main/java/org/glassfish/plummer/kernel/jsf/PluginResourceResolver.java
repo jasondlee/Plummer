@@ -18,7 +18,7 @@ public class PluginResourceResolver extends ResourceResolver {
     public URL resolveUrl(String path) {
         URL url = null;
         try {
-            url = url = Thread.currentThread().getContextClassLoader().getResource(path.substring(1));
+            url = Thread.currentThread().getContextClassLoader().getResource(path.substring(1));
             if (url == null) {
                 url = parent.resolveUrl(path);
             }

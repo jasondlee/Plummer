@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import org.glassfish.plummer.api.NavNodes;
@@ -39,7 +40,7 @@ public class PluginService {
                 Class clazz = cp.getClass();
                 try {
                     processAnnotations(cpm, clazz);
-                    cpm.setPluginPackage(clazz.getPackage().getName());
+//                    cpm.setPluginPackage(clazz.getPackage().getName());
                 } catch (Exception ex) {
                     Logger.getLogger(PluginService.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -47,7 +48,7 @@ public class PluginService {
                 list.add(cpm);
             }
             Collections.sort(list, new PluginComparator());
-            metadata = Collections.unmodifiableList(metadata);
+            metadata = Collections.unmodifiableList(list);
         }
 
         return metadata;
