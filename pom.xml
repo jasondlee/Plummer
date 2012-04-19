@@ -16,7 +16,7 @@
 
     <modules>
         <module>api</module>
-        <module>example</module>
+        <module>examples</module>
         <module>kernel</module>
     </modules>
 

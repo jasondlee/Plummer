@@ -78,7 +78,7 @@
                         <configuration>
                             <target>
                                 <mkdir dir="target/plugins"/>
-                                <copy file="${project.basedir}/../example/plummer-sample1/target/plummer-sample1-${project.version}.jar"
+                                <copy file="${project.basedir}/../examples/plummer-sample1/target/plummer-sample1-${project.version}.jar"
                                     todir="target/plugins"/>
                             </target>
                         </configuration>
