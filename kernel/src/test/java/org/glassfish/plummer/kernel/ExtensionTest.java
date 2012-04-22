@@ -26,7 +26,7 @@ public class ExtensionTest {
 
     @BeforeClass
     public static void beforeClass() {
-        System.setProperty("plugin.dir", "../example/plummer-sample1/target/");
+        System.setProperty("plugin.dir", "../examples/plummer-sample1/target/");
         weld = new Weld().initialize();
     }
     

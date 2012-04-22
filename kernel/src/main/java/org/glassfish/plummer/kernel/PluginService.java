@@ -11,9 +11,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
+import javax.enterprise.inject.spi.Bean;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import org.glassfish.plummer.api.NavNodes;
 import org.glassfish.plummer.api.Plugin;
 import org.glassfish.plummer.api.ViewFragment;
@@ -28,6 +31,34 @@ public class PluginService {
     private Instance<Plugin> plugins;
     private List<PluginMetadata> metadata;
     private static final Set<String> classNames = new HashSet<String>();
+    
+    /*
+    private PluginService() {
+        try {
+            InitialContext ic = new InitialContext();
+            BeanManager beanManager = (BeanManager)ic.lookup("java:comp/BeanManager");
+            Set<Bean<?>> beans = beanManager.getBeans(Plugin.class);
+            Iterator<Bean<?>> iterator = beans.iterator();
+            while(iterator.hasNext()) {
+                Bean bean = iterator.next();
+                System.out.println(bean.getName());
+            }
+//            CreationalContext<Plugin> ctx = beanManager.createCreationalContext(bean);
+            
+        } catch (NamingException ex) {
+            Logger.getLogger(PluginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    private static class LazyHolder {
+        static final PluginService pluginService = new PluginService();
+    }
+    
+    public static PluginService getPluginService() {
+        return LazyHolder.pluginService;
+    }
+    */
 
     public List<PluginMetadata> getPlugins() {
         if (metadata == null) {
