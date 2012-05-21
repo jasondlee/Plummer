@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.ProtectionDomain;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.jar.JarEntry;
@@ -30,89 +31,109 @@ public class FilesystemPluginFinder implements PluginFinder {
 
     private static final Logger logger = Logger.getLogger(FilesystemPluginFinder.class.getName());
     private static Set<Class<?>> classes;
-//    private static PluginClassLoader pcl;
+    private static PluginClassLoader pcl;
 
     @Override
     public synchronized Set<Class<?>> getClasses() {
-        /*
         if (pcl == null) {
-            final File[] files = getFiles();
-            if (files != null) {
+            final File[] jars = getFiles();
+            if (jars != null) {
                 try {
-                    pcl = new PluginClassLoader(files, Thread.currentThread().getContextClassLoader());
+                    URL[] urls = new URL[jars.length];
+                    int index = 0;
+                    for (File jar : jars) {
+                        urls[index++] = jar.toURI().toURL();
+                    }
+
+                    pcl = new PluginClassLoader(urls, Thread.currentThread().getContextClassLoader());
+                    // populate classes
                 } catch (IOException ex) {
                     Logger.getLogger(FilesystemPluginFinder.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+//            if (!Thread.currentThread().getContextClassLoader().equals(pcl)) {
+//                Thread.currentThread().setContextClassLoader(pcl);
+//            }
         }
-        if (!Thread.currentThread().getContextClassLoader().equals(pcl)) {
-            Thread.currentThread().setContextClassLoader(pcl);
-        }
-        return new HashSet<Class<?>>();
-        */
-        if (classes == null) {
-//            Set<URL> jars = new HashSet<URL>();
-            classes = new LinkedHashSet<Class<?>>();
-            final File[] files = getFiles();
-            if (files != null) {
-                URL[] urls = new URL[files.length];
-                int index = 0;
+        return pcl.getClasses();
 
-                for (File jarFile : files) {
-                    JarInputStream jis = null;
-                    try {
-                        final URL url = jarFile.toURI().toURL();
-                        urls[index++] = url;
-//                    ClassLoader cl = new URLClassLoader(new URL[] {url}, getClass().getClassLoader());
-                        try {
-                            System.out.println("\n\n\n\n ***** url = " + url);
-                            addURLToClassLoader(url);
-                        } catch (Exception e) {
-                            System.out.println(e.getLocalizedMessage());
-                        }
-
-                        //jis = new JarInputStream(new BufferedInputStream(new FileInputStream(jarFile)));
-                        jis = new JarInputStream(new BufferedInputStream(url.openStream()));
-
-                        JarEntry entry;
-
-                        while ((entry = jis.getNextJarEntry()) != null) {
-                            if (!entry.isDirectory()) {
-                                String fileName = entry.getName();
-                                if (fileName.endsWith(".class")) {
-                                    final String className = fileName.substring(0, fileName.length() - 6).replace("/", ".");
-                                    classes.add(
-                                            //                                    Class.forName(className, true, Thread.currentThread().getContextClassLoader())
-                                            defineClass(className, getBytes(entry, jis)));
-                                }
-                            }
-                        }
-                    } catch (Exception ex) {
-                        logger.log(Level.SEVERE, null, ex);
-                    } finally {
-                        closeInputStream(jis);
-                    }
-                }
-
-                //new URLClassLoader(urls, Thread.currentThread().getContextClassLoader());
-                /*
-                for (URL url : urls) {
-                    try {
-                        addURLToClassLoader(url);
-                    } catch (IntrospectionException ex) {
-                        logger.log(Level.SEVERE, null, ex);
-                    }
-                }
-                */
-            }
-        }
-
-        return classes;
+//        if (classes == null) {
+//            loadClasesFromJars();
+//        }
+//        return classes;
     }
 
     @Override
     public void release() {
         classes.clear();
+    }
+
+    protected File[] getFiles() {
+        String pluginDir = System.getProperty("plugin.dir");
+        if (pluginDir == null) {
+            pluginDir = System.getProperty("user.home") + "/.plugins";
+        }
+        File[] files = new File(pluginDir).listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                return file.isFile() && file.getName().toLowerCase().endsWith(".jar");
+            }
+        });
+        return files;
+    }
+
+    protected void loadClasesFromJars() {
+        classes = new LinkedHashSet<Class<?>>();
+        final File[] files = getFiles();
+        if (files != null) {
+            URL[] urls = new URL[files.length];
+            int index = 0;
+
+            for (File jarFile : files) {
+                JarInputStream jis = null;
+                try {
+                    final URL url = jarFile.toURI().
+                            toURL();
+                    urls[index++] = url;
+                    try {
+                        addURLToClassLoader(url);
+                    } catch (Exception e) {
+                        System.out.println(e.getLocalizedMessage());
+                    }
+
+                    //jis = new JarInputStream(new BufferedInputStream(new FileInputStream(jarFile)));
+                    jis = new JarInputStream(new BufferedInputStream(url.openStream()));
+
+                    JarEntry entry;
+
+                    while ((entry = jis.getNextJarEntry()) != null) {
+                        if (!entry.isDirectory()) {
+                            String fileName = entry.getName();
+                            if (fileName.endsWith(".class")) {
+                                final String className = fileName.substring(0, fileName.length() - 6).
+                                        replace("/", ".");
+                                classes.add(
+                                        //                                    Class.forName(className, true, Thread.currentThread().getContextClassLoader())
+                                        defineClass(className, getBytes(entry, jis)));
+                            }
+                        }
+                    }
+                } catch (Exception ex) {
+                    logger.log(Level.SEVERE, null, ex);
+                } finally {
+                    closeInputStream(jis);
+                }
+            }
+
+            //new URLClassLoader(urls, Thread.currentThread().getContextClassLoader());
+//                for (URL url : urls) {
+//                    try {
+//                        addURLToClassLoader(url);
+//                    } catch (IntrospectionException ex) {
+//                        logger.log(Level.SEVERE, null, ex);
+//                    }
+//                }
+        }
     }
 
     protected void closeInputStream(InputStream is) {
@@ -123,21 +144,6 @@ public class FilesystemPluginFinder implements PluginFinder {
                 logger.log(Level.SEVERE, null, ex);
             }
         }
-    }
-
-    protected File[] getFiles() {
-        String pluginDir = System.getProperty("plugin.dir");
-        if (pluginDir == null) {
-            pluginDir = System.getProperty("user.home") + "/.plugins";
-        }
-        File[] files = new File(pluginDir).listFiles(new FileFilter() {
-
-            @Override
-            public boolean accept(File file) {
-                return file.isFile() && file.getName().toLowerCase().endsWith(".jar");
-            }
-        });
-        return files;
     }
 
     protected void addURLToClassLoader(URL url) throws IntrospectionException {
@@ -212,6 +218,5 @@ public class FilesystemPluginFinder implements PluginFinder {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-
     }
 }
