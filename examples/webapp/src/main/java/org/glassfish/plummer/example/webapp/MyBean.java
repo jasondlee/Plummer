@@ -5,9 +5,9 @@
 package org.glassfish.plummer.example.webapp;
 
 import javax.enterprise.inject.Instance;
-import org.glassfish.plummer.example.model.DataStore;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
+import org.glassfish.plummer.example.model.DataStore;
 
 /**
  *

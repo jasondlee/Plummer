@@ -30,9 +30,26 @@ public class FilesystemPluginFinder implements PluginFinder {
 
     private static final Logger logger = Logger.getLogger(FilesystemPluginFinder.class.getName());
     private static Set<Class<?>> classes;
+//    private static PluginClassLoader pcl;
 
     @Override
     public synchronized Set<Class<?>> getClasses() {
+        /*
+        if (pcl == null) {
+            final File[] files = getFiles();
+            if (files != null) {
+                try {
+                    pcl = new PluginClassLoader(files, Thread.currentThread().getContextClassLoader());
+                } catch (IOException ex) {
+                    Logger.getLogger(FilesystemPluginFinder.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        if (!Thread.currentThread().getContextClassLoader().equals(pcl)) {
+            Thread.currentThread().setContextClassLoader(pcl);
+        }
+        return new HashSet<Class<?>>();
+        */
         if (classes == null) {
 //            Set<URL> jars = new HashSet<URL>();
             classes = new LinkedHashSet<Class<?>>();
@@ -46,8 +63,13 @@ public class FilesystemPluginFinder implements PluginFinder {
                     try {
                         final URL url = jarFile.toURI().toURL();
                         urls[index++] = url;
-//                    ClassLoader cl = new URLClassLoader(new URL[] {url}, getClass().getClassLoader());                    
-                        addURLToClassLoader(url);
+//                    ClassLoader cl = new URLClassLoader(new URL[] {url}, getClass().getClassLoader());
+                        try {
+                            System.out.println("\n\n\n\n ***** url = " + url);
+                            addURLToClassLoader(url);
+                        } catch (Exception e) {
+                            System.out.println(e.getLocalizedMessage());
+                        }
 
                         //jis = new JarInputStream(new BufferedInputStream(new FileInputStream(jarFile)));
                         jis = new JarInputStream(new BufferedInputStream(url.openStream()));
@@ -73,6 +95,7 @@ public class FilesystemPluginFinder implements PluginFinder {
                 }
 
                 //new URLClassLoader(urls, Thread.currentThread().getContextClassLoader());
+                /*
                 for (URL url : urls) {
                     try {
                         addURLToClassLoader(url);
@@ -80,11 +103,11 @@ public class FilesystemPluginFinder implements PluginFinder {
                         logger.log(Level.SEVERE, null, ex);
                     }
                 }
+                */
             }
         }
 
         return classes;
-
     }
 
     @Override
@@ -121,11 +144,12 @@ public class FilesystemPluginFinder implements PluginFinder {
         System.out.println("Adding " + url.toExternalForm());
 
         try {
-            final ClassLoader classLoader = //Thread.currentThread().getContextClassLoader();
-                    getClass().getClassLoader();
+            final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+//                    getClass().getClassLoader();
 
             Method method = URLClassLoader.class.getDeclaredMethod("addURL", new Class[]{URL.class});
             method.setAccessible(true);
+            System.out.println(url.toString());
             method.invoke(classLoader, new Object[]{url});
         } catch (Throwable t) {
             throw new IntrospectionException("Error when adding url to ClassLoader ");

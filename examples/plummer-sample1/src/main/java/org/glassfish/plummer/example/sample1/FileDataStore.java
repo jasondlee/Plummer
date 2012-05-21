@@ -5,7 +5,6 @@
 package org.glassfish.plummer.example.sample1;
 
 import org.glassfish.plummer.example.model.DataStore;
-import javax.inject.Inject;
 
 /**
  *

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:pl="http://java.net/plummer">
+    <h:head>
+        <title>Simple Blog Page</title>
+        <style type="text/css">
+            label { vertical-align: top; }
+        </style>
+    </h:head>
+    <body>
+        <h1>Blog Entries</h1>
+        <h:form>
+            <h:selectOneMenu value="#{blogBean.translator}" converter="#{translatorConvertor}">
+                <f:ajax render=":entries" event="change" execute="@form"/>
+                <f:selectItems value="#{blogBean.translators}" var="t" itemLabel="#{t.name}"/>
+            </h:selectOneMenu>
+        </h:form>
+        <h:dataTable id="entries" value="#{blogBean.entries}" var="entry" >
+            <h:column>
+                #{entry}
+            </h:column>
+        </h:dataTable>
+        <hr/>
+
+        <h:form>
+            <h:outputLabel for="entry" value="New Entry"/>
+            <h:inputTextarea id="entry" value="#{blogBean.entry}" rows="20" cols="120"/>
+            <br/>
+            <h:commandButton value="Add" action="#{blogBean.addEntry}"/>
+        </h:form>
+    </body>
+</html>

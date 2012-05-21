@@ -4,13 +4,13 @@
  */
 package org.glassfish.plummer.kernel;
 
-import org.glassfish.plummer.example.model.DataStore;
-import org.glassfish.plummer.example.model.Marker;
 import java.util.Set;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import junit.framework.Assert;
+import org.glassfish.plummer.example.model.DataStore;
+import org.glassfish.plummer.example.model.Marker;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 import static org.junit.Assert.assertNotNull;
