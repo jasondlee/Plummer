@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Level;
@@ -19,7 +18,6 @@ import javax.enterprise.inject.spi.Extension;
 import org.glassfish.plummer.api.PluginFinder;
 
 public class PluginLoader implements Extension {
-
     protected static final String SERVICES_NAME = "org.glassfish.plummer.finders";
     private static final Logger logger = Logger.getLogger(PluginLoader.class.getName());
     private static List<PluginFinder> pluginFinders;
