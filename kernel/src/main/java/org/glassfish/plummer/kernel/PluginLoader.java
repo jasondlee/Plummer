@@ -51,6 +51,7 @@ public class PluginLoader implements Extension {
             List<Class<? extends PluginFinder>> list = getPluginExtensions(PluginFinder.class, SERVICES_NAME);
             if (list.isEmpty()) {
                 list.add(FilesystemPluginFinder.class);
+                //list.add(OsgiPluginFinder.class);
             }
             
             for (Class<? extends PluginFinder> pfc : list) {

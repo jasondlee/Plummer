@@ -1,6 +1,5 @@
 package org.glassfish.plummer.kernel.jsf;
 
-import org.glassfish.plummer.kernel.PluginLoader;
 import com.sun.faces.config.AnnotationScanner;
 import com.sun.faces.spi.AnnotationProvider;
 import java.lang.annotation.Annotation;
@@ -22,6 +21,7 @@ import javax.faces.render.FacesRenderer;
 import javax.faces.validator.FacesValidator;
 import javax.servlet.ServletContext;
 import org.glassfish.plummer.api.PluginFinder;
+import org.glassfish.plummer.kernel.PluginLoader;
 
 /**
  *

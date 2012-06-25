@@ -2,9 +2,9 @@ package org.glassfish.plummer.kernel;
 
 import java.beans.IntrospectionException;
 import java.io.BufferedInputStream;
-import java.io.File;
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -23,16 +23,15 @@ import java.util.logging.Logger;
 public class PluginClassLoader extends URLClassLoader {
 
     private static final Logger logger = Logger.getLogger(PluginClassLoader.class.getName());
+    private static final Level LOG_LEVEL = Level.FINE;
     private Set<Class<?>> classes;
-    ClassLoader parent;
+    private ClassLoader parent;
 
     public PluginClassLoader(URL[] urls, ClassLoader parent) throws IOException {
         super(urls, parent);
         this.parent = parent;
         classes = new LinkedHashSet<Class<?>>();
         if (urls != null) {
-            int index = 0;
-
             for (URL url : urls) {
                 JarInputStream jis = null;
                 try {
@@ -57,18 +56,16 @@ public class PluginClassLoader extends URLClassLoader {
                 } catch (Exception ex) {
                     logger.log(Level.SEVERE, null, ex);
                 } finally {
-                    closeInputStream(jis);
+                    close(jis);
                 }
             }
         }
     }
 
     private Class<?> defineClass(String className, byte[] byteContent) throws Exception {
-        ProtectionDomain pd = getClass().
-                getProtectionDomain();
+        ProtectionDomain pd = getClass().getProtectionDomain();
         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-                getClass().
-                getClassLoader();
+//                getClass().getClassLoader();
 
 //        classLoader.defineClass(className, byteContent, 0, byteContent.length, pd);
         
@@ -98,8 +95,7 @@ public class PluginClassLoader extends URLClassLoader {
                 }
             });
 
-            Logger.getLogger(getClass().getName()).
-                    log(Level.INFO, "Loading bytecode for {0}", className);
+            Logger.getLogger(getClass().getName()).log(LOG_LEVEL, "Loading bytecode for {0}", className);
             clM.invoke(classLoader, className, byteContent, 0, byteContent.length, pd);
             try {
                 return classLoader.loadClass(className);
@@ -114,12 +110,12 @@ public class PluginClassLoader extends URLClassLoader {
     }
 
     private void addURLToClassLoader(URL url) throws IntrospectionException {
-        System.out.println("Adding " + url.toExternalForm());
+        Logger.getLogger(getClass().getName()).log(LOG_LEVEL, "Adding {0}", url.toExternalForm());
 
         try {
             Method method = URLClassLoader.class.getDeclaredMethod("addURL", new Class[]{URL.class});
             method.setAccessible(true);
-            System.out.println("***** url = " + url.toString());
+            Logger.getLogger(getClass().getName()).log(LOG_LEVEL, "***** url = {0}", url.toString());
             method.invoke(Thread.currentThread().getContextClassLoader(), new Object[]{url});
         } catch (Throwable t) {
             throw new RuntimeException("Error when adding url to ClassLoader", t);
@@ -130,22 +126,30 @@ public class PluginClassLoader extends URLClassLoader {
         return classes;
     }
 
-    private byte[] getBytes(JarEntry entry, JarInputStream jis) throws IOException {
-        long size = entry.getSize();
-        byte[] b = new byte[(int) size];
-        int rb = 0;
-        int chunk;
-        while (((int) size - rb) > 0) {
-            chunk = jis.read(b, rb, (int) size - rb);
-            if (chunk == -1) {
-                break;
+    private byte[] getBytes(JarEntry entry, JarInputStream jis) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        byte[] bytes = new byte[0];
+
+        try {
+            byte[] buffer = new byte[2048];
+            int read = 0;
+
+            while (jis.available() > 0) {
+                read = jis.read(buffer, 0, buffer.length);
+                if (read > 0) {
+                    baos.write(buffer, 0, read);
+                }
             }
-            rb += chunk;
+
+            bytes = baos.toByteArray();
+        } catch (Exception e) {
+        } finally {
+            close(baos);
         }
-        return b;
+        return bytes;
     }
 
-    private void closeInputStream(InputStream is) {
+    private void close(Closeable is) {
         if (is != null) {
             try {
                 is.close();

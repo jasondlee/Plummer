@@ -4,7 +4,6 @@
  */
 package org.glassfish.plummer.kernel.rest;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import javax.enterprise.inject.spi.Bean;
