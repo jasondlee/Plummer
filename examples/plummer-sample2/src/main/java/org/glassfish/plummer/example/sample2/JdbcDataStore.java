@@ -4,8 +4,8 @@
  */
 package org.glassfish.plummer.example.sample2;
 
-import org.glassfish.plummer.example.model.DataStore;
 import javax.inject.Named;
+import org.glassfish.plummer.example.model.DataStore;
 
 /**
  *

@@ -5,15 +5,15 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:pl="http://java.net/plummer">
-    <head>
-        <title>Should Not Be Displayed</title>
-    </head>
+    <h:head>
+    </h:head>
     <body>
         <h1>MyBean</h1>
         #{myBean.example}
         <hr/>
         <h1>JsfBean</h1>
         <ul>
+            // todo ?
             <ui:repeat value="#{jsfBean.someData}" var="data">
                 <li>#{data}</li>
             </ui:repeat>
@@ -22,6 +22,8 @@
         <h1>FileDataStore</h1>
         #{fileDataStore.description}
         <hr/>
+        <div style="border: 2px dashed red">
         <pl:viewFragment type="foo"/>
+        </div>
     </body>
 </html>

@@ -7,11 +7,13 @@ package org.glassfish.plummer.example.sample2;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.glassfish.plummer.example.model.BlogEntryProcessor;
+import org.glassfish.plummer.example.model.Tag;
 
 /**
  *
  * @author jdlee
  */
+@Tag
 public class GoogleMapsProcessor implements BlogEntryProcessor {
 
     @Override
@@ -21,17 +23,11 @@ public class GoogleMapsProcessor implements BlogEntryProcessor {
 
     @Override
     public String process(String text) {
-        Pattern p = Pattern.compile("(\\d+? .*, .*, .* \\d{5}?)");
-        Matcher m = p.matcher(text);
-        
-        System.out.println(m.groupCount());
-        
-        return text;
-    }
-    
-    public static void main (String... args) {
-        GoogleMapsProcessor p = new GoogleMapsProcessor();
-        
-        System.out.println(p.process("14613 N. May Ave., Oklahoma City, OK 73134"));
+        Pattern pattern = Pattern.compile("\\[map\\](.*?)\\[\\/map\\]");
+        String replaceStr = "<a href=\\\"https://maps.google.com/maps?q=$1\\\">$1</a>";
+
+        Matcher matcher = pattern.matcher(text);
+        String result = matcher.replaceAll(replaceStr);
+        return result;
     }
 }

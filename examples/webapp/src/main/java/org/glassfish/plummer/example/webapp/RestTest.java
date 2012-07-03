@@ -12,10 +12,10 @@ import org.glassfish.plummer.api.RestResource;
  *
  * @author jdlee
  */
-@Path("/test")
+@Path("test")
 public class RestTest implements RestResource {
     @GET
     public String test() {
-        return "test";
+        return "RestResource successfully deployed!";
     }
 }

@@ -6,6 +6,8 @@ package org.glassfish.plummer.kernel.rest;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.naming.InitialContext;
@@ -19,6 +21,7 @@ import org.glassfish.plummer.api.RestResource;
  */
 public class RestApplication extends Application {
     private Set<Class<?>> classes;
+    private Logger logger = Logger.getLogger(RestApplication.class.getName());
 
     @Override
     public Set<Class<?>> getClasses() {
@@ -30,7 +33,9 @@ public class RestApplication extends Application {
                     BeanManager beanManager = (BeanManager) initialContext.lookup("java:comp/BeanManager");
                     Set<Bean<?>> beans = beanManager.getBeans(RestResource.class);
                     for (Bean bean : beans) {
-                        classes.add(bean.getBeanClass());
+                        final Class beanClass = bean.getBeanClass();
+                        logger.log(Level.INFO, "Added type " + beanClass.getName());
+                        classes.add(beanClass);
                     }
                 } catch (NamingException e) {
                 }

@@ -45,7 +45,7 @@ public class FilesystemPluginFinder implements PluginFinder {
                         urls[index++] = jar.toURI().toURL();
                     }
 
-                        pcl = new PluginClassLoader(urls, Thread.currentThread().getContextClassLoader());
+                    pcl = new PluginClassLoader(urls, Thread.currentThread().getContextClassLoader());
                     // populate classes
                 } catch (IOException ex) {
                     Logger.getLogger(FilesystemPluginFinder.class.getName()).log(Level.SEVERE, null, ex);

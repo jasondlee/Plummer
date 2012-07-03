@@ -24,7 +24,6 @@ public class PluginLoader implements Extension {
     List<Class<? extends PluginFinder>> pluginFinderClasses;
 
     public void beforeBeanDiscovery(@Observes BeforeBeanDiscovery bbd, BeanManager beanManager) {
-        logger.log(Level.INFO, "\n\n\n\n*******************beforeBeanDiscovery");
         for (PluginFinder pluginFinder : getPluginFinders()) {
             try {
                 for (Class<?> clazz : pluginFinder.getClasses()) {
@@ -39,7 +38,6 @@ public class PluginLoader implements Extension {
     }
 
     public void afterDeploymentValidation(@Observes AfterDeploymentValidation adv) {
-        logger.log(Level.INFO, "\n\n\n\n*******************afterDeploymentValidation");
 //        for (PluginFinder pluginFinder : pluginFinders) {
 //            pluginFinder.release();
 //        }

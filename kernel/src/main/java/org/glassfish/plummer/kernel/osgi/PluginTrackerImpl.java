@@ -20,10 +20,8 @@ import org.osgi.framework.Bundle;
 public class PluginTrackerImpl implements PluginTracker {
     private static PluginTracker instance;
     private Set<String> classes = new HashSet<String>();
-    private Set<Class<?>> classes2 = new HashSet<Class<?>>();
 
     private PluginTrackerImpl() {
-
     }
 
     public static synchronized PluginTracker instance() {

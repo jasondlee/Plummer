@@ -21,14 +21,14 @@
         </h:form>
         <h:dataTable id="entries" value="#{blogBean.entries}" var="entry" >
             <h:column>
-                #{entry}
+                <h:outputText value="#{entry}" escape="false"/>
             </h:column>
         </h:dataTable>
         <hr/>
 
         <h:form>
             <h:outputLabel for="entry" value="New Entry"/>
-            <h:inputTextarea id="entry" value="#{blogBean.entry}" rows="20" cols="120"/>
+            <h:inputTextarea id="entry" value="#{blogBean.entry}" rows="10" cols="120"/>
             <br/>
             <h:commandButton value="Add" action="#{blogBean.addEntry}"/>
         </h:form>

@@ -9,11 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.enterprise.inject.Any;
+import javax.enterprise.event.Event;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.glassfish.plummer.example.model.BlogEntryProcessor;
+import org.glassfish.plummer.example.model.BlogPostedEvent;
+import org.glassfish.plummer.example.model.Tag;
+import org.glassfish.plummer.example.model.Translator;
 
 /**
  *
@@ -24,11 +27,18 @@ import org.glassfish.plummer.example.model.BlogEntryProcessor;
 public class BlogBean implements Serializable {
     private String entry;
     private List<String> entries = new ArrayList<String>();
+
     @Inject @English
     private BlogEntryProcessor translator;
     
-    @Inject @Any
+    @Inject @Translator
     Instance<BlogEntryProcessor> translators;
+
+    @Inject @Tag
+    Instance<BlogEntryProcessor> tags;
+
+    @Inject
+    private Event<BlogPostedEvent> blogPostedEvents;
     
     @PostConstruct
     protected void defaults() {
@@ -42,13 +52,18 @@ public class BlogBean implements Serializable {
     public List<String> getEntries() {
         List<String> list = new ArrayList<String>();
         for (String text : entries) {
-            list.add(translator.process(text));
+            text = translator.process(text);
+            for (BlogEntryProcessor tag : tags) {
+                text = tag.process(text);
+            }
+            list.add(text);
         }
         return list;
     }
     
     public String addEntry() {
         entries.add(entry);
+        blogPostedEvents.fire(new BlogPostedEvent(entry));
         entry = null;
         return null;
     }
