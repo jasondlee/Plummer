@@ -52,10 +52,10 @@ public class BlogBean implements Serializable {
     public List<String> getEntries() {
         List<String> list = new ArrayList<String>();
         for (String text : entries) {
-            text = translator.process(text);
             for (BlogEntryProcessor tag : tags) {
                 text = tag.process(text);
             }
+            text = translator.process(text);
             list.add(text);
         }
         return list;

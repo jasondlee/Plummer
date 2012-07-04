@@ -23,5 +23,4 @@ public class PlummerActivator implements BundleActivator {
     public void stop(BundleContext context) throws Exception {
         context.ungetService(context.getServiceReference(PluginTracker.class.getName()));
     }
-
 }

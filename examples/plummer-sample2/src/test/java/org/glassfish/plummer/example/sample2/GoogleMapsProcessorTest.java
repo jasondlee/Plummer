@@ -15,8 +15,11 @@ public class GoogleMapsProcessorTest {
     @Test
     public void testTag() {
         GoogleMapsProcessor p = new GoogleMapsProcessor();
-        String text = p.process("The address for Disneyland is [map]1313 S. Disneyland Drive, Anaheim, CA 92802[/map]. " +
-                "The address for JAXConf is [map]1675 Owens Street, San Francisco, CA 94142[/map].");
-        Assert.assertEquals("The address for Disneyland is <a href=\"https://maps.google.com/maps?q=\"1313 S. Disneyland Drive, Anaheim, CA 92802\">1313 S. Disneyland Drive, Anaheim, CA 92802</a>. The address for JAXConf is <a href=\"https://maps.google.com/maps?q=\"1675 Owens Street, San Francisco, CA 94142\">1675 Owens Street, San Francisco, CA 94142</a>.", text);
+        String text = p.process("The address for Disneyland is [map]1313 S. Disneyland Drive, Anaheim, CA 92802[/map]. The address for JAXConf is [map]1675 Owens Street, San Francisco, CA 94142[/map].");
+        Assert.assertFalse(text.contains("[map]"));
+        Assert.assertFalse(text.contains("[/map]"));
+        Assert.assertTrue(text.contains("92802\">1313 S."));
+        Assert.assertTrue(text.contains("92802</a>. The"));
+        Assert.assertTrue(text.contains("is <a href="));
     }
 }

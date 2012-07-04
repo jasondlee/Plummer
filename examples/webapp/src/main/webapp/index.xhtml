@@ -9,21 +9,17 @@
     </h:head>
     <body>
         <h1>MyBean</h1>
-        #{myBean.example}
+        Here is the output of calling <code>getDescription()</code> on every <code>DataStore</code> object deployed:<br/>
+        <h:outputText value="#{myBean.example}" escape="false"/>
         <hr/>
         <h1>JsfBean</h1>
         <ul>
-            // todo ?
             <ui:repeat value="#{jsfBean.someData}" var="data">
-                <li>#{data}</li>
+                <li><h:outputText value="#{data}" escape="false"/></li>
             </ui:repeat>
         </ul>
         <hr />
         <h1>FileDataStore</h1>
         #{fileDataStore.description}
-        <hr/>
-        <div style="border: 2px dashed red">
-        <pl:viewFragment type="foo"/>
-        </div>
     </body>
 </html>

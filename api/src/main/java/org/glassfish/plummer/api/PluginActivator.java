@@ -13,7 +13,6 @@ import org.osgi.util.tracker.ServiceTracker;
  * @author jdlee
  */
 public class PluginActivator implements BundleActivator {
-
     @Override
     public void start(BundleContext context) throws Exception {
         ServiceTracker tracker = new ServiceTracker(context, PluginTracker.class.getName(), null);
@@ -28,5 +27,4 @@ public class PluginActivator implements BundleActivator {
     @Override
     public void stop(BundleContext context) throws Exception {
     }
-
 }
