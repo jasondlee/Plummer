@@ -48,6 +48,6 @@ import java.util.Comparator;
 public class PluginComparator implements Comparator<PluginMetadata> {
     @Override
     public int compare(PluginMetadata cp1, PluginMetadata cp2) {
-        return cp2.getPriority() - cp1.getPriority();
+        return cp1.getPriority() - cp2.getPriority();
     }
 }

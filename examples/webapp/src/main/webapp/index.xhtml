@@ -7,7 +7,7 @@
       xmlns:pl="http://java.net/plummer">
     <h:head>
     </h:head>
-    <body>
+    <h:body>
         <h1>MyBean</h1>
         Here is the output of calling <code>getDescription()</code> on every <code>DataStore</code> object deployed:<br/>
         <h:outputText value="#{myBean.example}" escape="false"/>
@@ -21,5 +21,6 @@
         <hr />
         <h1>FileDataStore</h1>
         #{fileDataStore.description}
-    </body>
+        <hr/>
+    </h:body>
 </html>
