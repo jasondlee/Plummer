@@ -8,7 +8,7 @@
     <name>Plummer Kernel</name>
 
     <parent>
-        <groupId>org.glassfish.plummer</groupId>
+        <groupId>com.steeplesoft.plummer</groupId>
         <artifactId>plummer-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
@@ -117,14 +117,14 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>org.glassfish.plummer,
-                            org.glassfish.plummer.jsf,
-                            org.glassfish.plummer.rest
+                        <Export-Package>com.steeplesoft.plummer,
+                            com.steeplesoft.plummer.jsf,
+                            com.steeplesoft.plummer.rest
                         </Export-Package>
 <!--                        <Import-Package>javax.servlet</Import-Package>-->
                         <DynamicImport>*</DynamicImport>
                         <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
-                        <Bundle-Activator>org.glassfish.plummer.kernel.osgi.PlummerActivator</Bundle-Activator>
+                        <Bundle-Activator>com.steeplesoft.plummer.kernel.osgi.PlummerActivator</Bundle-Activator>
                     </instructions>
                 </configuration>
             </plugin>

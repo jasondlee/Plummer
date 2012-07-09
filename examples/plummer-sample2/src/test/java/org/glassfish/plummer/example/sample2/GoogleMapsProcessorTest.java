@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.glassfish.plummer.example.sample2;
+package com.steeplesoft.plummer.example.sample2;
 
+import com.steeplesoft.plummer.example.sample2.GoogleMapsProcessor;
 import org.junit.Assert;
 import org.junit.Test;
 

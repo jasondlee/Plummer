@@ -18,9 +18,7 @@
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>javax.ws.rs.Application</param-name>
-            <param-value>org.glassfish.plummer.kernel.rest.RestApplication</param-value>
-            <!--            <param-name>com.sun.jersey.config.property.packages</param-name>
-            <param-value>org.glassfish.plummer.example.webapp</param-value>-->
+            <param-value>com.steeplesoft.plummer.kernel.rest.RestApplication</param-value>
         </init-param>
     </servlet>
     

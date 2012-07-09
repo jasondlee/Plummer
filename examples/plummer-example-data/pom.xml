@@ -4,7 +4,7 @@
     <packaging>bundle</packaging>
 
     <parent>
-        <groupId>org.glassfish.plummer</groupId>
+        <groupId>com.steeplesoft.plummer</groupId>
         <artifactId>plummer-example-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
@@ -27,7 +27,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>org.glassfish.plummer.example.model</Export-Package>
+                        <Export-Package>com.steeplesoft.plummer.example.model</Export-Package>
                         <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
                     </instructions>
                 </configuration>
