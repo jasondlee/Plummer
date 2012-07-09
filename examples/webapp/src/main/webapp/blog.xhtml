@@ -16,7 +16,7 @@
         <h:form>
             <h:selectOneMenu value="#{blogBean.translator}" converter="#{translatorConvertor}">
                 <f:ajax render=":entries" event="change" execute="@form"/>
-                <f:selectItems value="#{blogBean.translators}" var="t" itemLabel="#{t.name}"/>
+                <f:selectItems value="#{blogBean.translators}" var="t" itemLabel="#{t.name}" />
             </h:selectOneMenu>
         </h:form>
         <h:dataTable id="entries" value="#{blogBean.entries}" var="entry" >

@@ -1,21 +1,12 @@
 #!/bin/bash
 
-DIST=$1
-if [ "$DIST" == "" ] ; then
-    echo "You must specify the distribution .war"
-    exit 1
-fi
-BASE=`echo $DIST | sed -e 's/\.war//'`
-
-rm -rf work
-mkdir work
-cd work
-
-jar xf ../$DIST
-cp ../plugins/*jar WEB-INF/lib
-#rm WEB-INF/lib/plummer-kernel* WEB-INF/lib/plummer-api*
-
-jar cf ../$BASE-repackaged.war *
-
+rm -rf pkg
+mkdir -p pkg/plugins
+cp examples/plummer-sample*/target/*jar pkg/plugins
+cp examples/webapp/target/*war pkg
+cd pkg
+../repackage.sh *war
+mv *repackaged.war ..
 cd ..
-rm -rf work
+rm -rf pkg
+

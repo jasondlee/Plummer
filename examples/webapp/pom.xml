@@ -54,12 +54,12 @@
                             </supportedProjectTypes>
                             <instructions>
                                 <!-- Read all OSGi configuration info from this optional file -->
-                                <!--                        <_include>-osgi.properties</_include>-->
-
-
+                                <!-- <_include>-osgi.properties</_include>-->
                                 <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                                 <Export-Package/>
-                                <Import-Package>org.glassfish.plummer.api, org.osgi.framework, org.osgi.util.tracker</Import-Package>
+                                <Import-Package>
+                                    org.glassfish.plummer.api, org.osgi.framework, org.osgi.util.tracker
+                                </Import-Package>
                                 <DynamicImport-Package>*</DynamicImport-Package>
                                 <Bundle-ClassPath>.,WEB-INF/classes</Bundle-ClassPath>
                                 <Embed-Directory>WEB-INF/lib</Embed-Directory>
