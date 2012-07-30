@@ -91,8 +91,7 @@ public class FilesystemPluginFinder implements PluginFinder {
             for (File jarFile : files) {
                 JarInputStream jis = null;
                 try {
-                    final URL url = jarFile.toURI().
-                            toURL();
+                    final URL url = jarFile.toURI().toURL();
                     urls[index++] = url;
                     try {
                         addURLToClassLoader(url);
@@ -195,7 +194,6 @@ public class FilesystemPluginFinder implements PluginFinder {
         try {
             java.security.AccessController.doPrivileged(
                     new java.security.PrivilegedExceptionAction() {
-
                         @Override
                         public java.lang.Object run() throws Exception {
                             if (!clM.isAccessible()) {
@@ -207,7 +205,7 @@ public class FilesystemPluginFinder implements PluginFinder {
 
             Logger.getLogger(getClass().getName()).log(Level.INFO, "Loading bytecode for {0}", className);
             clM.invoke(classLoader, className, byteContent, 0,
-                    byteContent.length, pd);
+                       byteContent.length, pd);
 
             try {
                 return classLoader.loadClass(className);
